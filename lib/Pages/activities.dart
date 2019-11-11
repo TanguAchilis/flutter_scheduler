@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_schedular/Pages/addTodo.dart';
+import 'package:my_schedular/components/activityItem.dart';
 
 class Activities extends StatelessWidget {
   final String date;
@@ -16,7 +17,9 @@ class Activities extends StatelessWidget {
               color: Color(0xff2962ff),
               iconSize: 30,
               icon: Icon(Icons.add),
-              onPressed: (){Navigator.pushNamed(context, AddTodo.id);},
+              onPressed: () {
+                Navigator.pushNamed(context, AddTodo.id);
+              },
             ),
           ],
         ),
@@ -36,6 +39,7 @@ class AcitiviesBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      int count=10;
     return Container(
       decoration: BoxDecoration(
         color: Color(0xff2962ff),
@@ -51,7 +55,7 @@ class AcitiviesBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                  ''+date,
+                    '' + date,
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                   Material(
@@ -68,11 +72,16 @@ class AcitiviesBody extends StatelessWidget {
               ),
             ),
           ),
+
+          //this is the begining of the white box
           Hero(
             tag: 'home',
             child: Container(
-              height: MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).size.height / 6,
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).size.height / 6,
+              ),
+
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -81,48 +90,68 @@ class AcitiviesBody extends StatelessWidget {
                   bottomRight: Radius.circular(10),
                 ),
               ),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 10,
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'All tasks',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18),
-                            ),
-                            IconButton(
-                              padding: EdgeInsets.only(left: 0),
-                              icon: Icon(Icons.expand_less),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            )
-                          ],
-                        ),
-                        Text(' ' + ' ' + 'Completed',)
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Divider(
-                      color: Colors.grey.shade700,
-                      thickness:1,
-                    ),
-                  ),
 
+              //the main child of the white box which is a column
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    //the first child of the column which is a container showing the number of completed tasks
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 10,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                'All tasks',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 18),
+                              ),
+                              IconButton(
+                                padding: EdgeInsets.only(left: 0),
+                                icon: Icon(Icons.expand_less),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          ),
+                          Text(
+                            ' ' + ' ' + 'Completed',
+                          )
+                        ],
+                      ),
+                    ),
 
-                ],
+                    //the second child of the column is a container containing a divider
+                    Container(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Divider(
+                        color: Colors.grey.shade700,
+                        thickness: 1,
+                      ),
+                    ),
+
+                    //the last child of the column is a container which has a child of a listview builder
+                    //infact this is the main part which holds all of the acitivities scheduled
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 10,
+                      ),
+                      //color: Colors.red,
+                      padding: EdgeInsets.only(left: 5, right: 20),
+                      width: double.infinity,
+                      child: ExpansionList(),
+                      //child: ActivityItem(activity: 'Go show five girls how alpha i am ',time: '5:20 am',completedCounter: count,),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

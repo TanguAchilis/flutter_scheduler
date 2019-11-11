@@ -57,6 +57,7 @@ class _MyHomeState extends State<MyHome> {
               children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.keyboard_backspace),
+                  onPressed: (){Navigator.pop(context);}
                 ),
                 Text(
                   'Add new Todo',
