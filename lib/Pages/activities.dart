@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_schedular/Pages/addTodo.dart';
+import 'package:my_schedular/Providers/dataProvider.dart';
 import 'package:my_schedular/components/activityItem.dart';
+import 'package:provider/provider.dart';
 
 class Activities extends StatelessWidget {
   final String date;
@@ -39,7 +41,8 @@ class AcitiviesBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      int count=10;
+    int count = 10;
+    var provider = Provider.of<DataProvider>(context);
     return Container(
       decoration: BoxDecoration(
         color: Color(0xff2962ff),
@@ -123,7 +126,7 @@ class AcitiviesBody extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            ' ' + ' ' + 'Completed',
+                            '${provider.readCounter} ' + '/${provider.readTodoList.length} ' + 'Completed',
                           )
                         ],
                       ),
@@ -145,10 +148,40 @@ class AcitiviesBody extends StatelessWidget {
                         top: 10,
                       ),
                       //color: Colors.red,
-                      padding: EdgeInsets.only(left: 5, right: 20),
+                      padding: EdgeInsets.symmetric(horizontal: 20),
                       width: double.infinity,
-                      child: ExpansionList(),
-                      //child: ActivityItem(activity: 'Go show five girls how alpha i am ',time: '5:20 am',completedCounter: count,),
+                      //child: ExpansionList(),
+                      child: Column(
+                        children: <Widget>[
+                          ActivityItem(
+                            activity: 'Go show five girls',
+                            time: '5:20 am',
+                            completedCounter: count,
+                          ),
+                          ActivityItem(
+                            activity:
+                                'Go show five girls how alpha i am Go show five girls how alpha i am ',
+                            time: '5:20 am',
+                            completedCounter: count,
+                          ),
+
+                          Container(height: 300,
+                                                      child: ListView.builder(
+                              itemCount: provider.readTodoList.length,
+                              itemBuilder: (BuildContext context, index) {
+                                return ActivityItem(
+                                  activity: provider.readTodoList[index]
+                                      ['activity'],
+                                  time: provider.readTodoList[index]['time'],
+                                  category:provider.readTodoList[index]['category'],
+                                  
+                                );
+                              },
+                            ),
+                          )
+
+                        ],
+                      ),
                     )
                   ],
                 ),
