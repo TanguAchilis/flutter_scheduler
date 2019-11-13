@@ -126,7 +126,9 @@ class AcitiviesBody extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            '${provider.readCounter} ' + '/${provider.readTodoList.length} ' + 'Completed',
+                            '${provider.readCounter} ' +
+                                '/${provider.readTodoList.length} ' +
+                                'Completed',
                           )
                         ],
                       ),
@@ -151,36 +153,22 @@ class AcitiviesBody extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       width: double.infinity,
                       //child: ExpansionList(),
-                      child: Column(
-                        children: <Widget>[
-                          ActivityItem(
-                            activity: 'Go show five girls',
-                            time: '5:20 am',
-                            completedCounter: count,
-                          ),
-                          ActivityItem(
-                            activity:
-                                'Go show five girls how alpha i am Go show five girls how alpha i am ',
-                            time: '5:20 am',
-                            completedCounter: count,
-                          ),
+                      child: Container(
 
-                          Container(height: 300,
-                                                      child: ListView.builder(
-                              itemCount: provider.readTodoList.length,
-                              itemBuilder: (BuildContext context, index) {
-                                return ActivityItem(
-                                  activity: provider.readTodoList[index]
-                                      ['activity'],
-                                  time: provider.readTodoList[index]['time'],
-                                  category:provider.readTodoList[index]['category'],
-                                  
-                                );
-                              },
-                            ),
-                          )
-
-                        ],
+                        //constraints: BoxConstraints(minHeight:MediaQuery.of(context).size.height/1.3, ),
+                        height: MediaQuery.of(context).size.height/1.3,
+                        child: ListView.builder(
+                          itemCount: provider.readTodoList.length,
+                          itemBuilder: (BuildContext context, index) {
+                            return ActivityItem(
+                              activity: provider.readTodoList[index]
+                                  ['activity'],
+                              time: provider.readTodoList[index]['time'],
+                              category: provider.readTodoList[index]
+                                  ['category'],
+                            );
+                          },
+                        ),
                       ),
                     )
                   ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_schedular/Providers/dataProvider.dart';
+import 'package:provider/provider.dart';
 //var formattedDate = "${date.day}-${date.month}-${date.year}";
 
 class AddTodo extends StatelessWidget {
@@ -60,6 +62,7 @@ class _MyHomeState extends State<MyHome> {
 
   @override
   Widget build(BuildContext context) {
+    var provider= Provider.of<DataProvider>(context);
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(MediaQuery.of(context).size.width / 15),
@@ -267,7 +270,10 @@ class _MyHomeState extends State<MyHome> {
               decoration: InputDecoration(hintText: 'Notification'),
             ),
             RaisedButton(
-              onPressed: (){print('placeholder for action');},
+              onPressed: (){
+                provider.addTodo={'activity': activity, 'time': formatedTime, 'category': category};
+                Navigator.pop(context);
+              },
               color: Color(0xff2962ff),
               child: Text('Add your Todo', style: TextStyle(color: Colors.white),),
               padding: EdgeInsets.symmetric(vertical: 13),
