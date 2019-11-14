@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "98059051886",
+    "firebase_url": "https://scheduler-234ff.firebaseio.com",
+    "project_id": "scheduler-234ff",
+    "storage_bucket": "scheduler-234ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98059051886:android:8bc99e82297faed774977f",
+        "android_client_info": {
+          "package_name": "com.tanguachilisgmail.my_schedular"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98059051886-j6i9nh9j0nmuii99tud1a6r5v3i0hfn6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq7XHOkBTy1g1btnBiwo6DYdKj4gQdl4k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98059051886-j6i9nh9j0nmuii99tud1a6r5v3i0hfn6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
