@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           builder: (_) => DataProvider(),
-        )
+        ),
+
+        
       ],
       child: MaterialApp(
           title: 'Flutter Demo',

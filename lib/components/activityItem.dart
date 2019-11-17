@@ -4,11 +4,12 @@ import 'package:provider/provider.dart';
 
 class ActivityItem extends StatefulWidget {
   ActivityItem(
-      {this.activity, this.time, this.completedCounter, this.category});
+      {this.activity, this.time, this.completedCounter, this.category, this.changeVariable});
   int completedCounter;
   final String activity;
   final String time;
   final String category;
+  final Function () changeVariable;
   @override
   _ActivityItemState createState() => _ActivityItemState();
 }
@@ -34,17 +35,22 @@ class _ActivityItemState extends State<ActivityItem> {
               Padding(
                 padding: const EdgeInsets.only(right: 17),
                 child: GestureDetector(
-                  onTap: () {
+                  onTap:() {
                     setState(() {
                       isChecked = !isChecked;
-                      isChecked
-                          ? provider.setCounter = 1
-                          : provider.setCounter = 0;
-                      if (provider.readCounter >= 0 && isChecked == false) {
-                        provider.setCounter = -1;
-                      }
-                      print(provider.readCounter);
+
+                      //
+                      // print(provider.readCounter);
                     });
+                    //  isChecked
+                    //       ? provider.setCounter = 1
+                    //       : provider.setCounter = 0;
+                    //   if (provider.readCounter >= 0 && isChecked == false) {
+                    //     provider.setCounter = -1;
+                    //   }
+                       widget.changeVariable();
+
+                      
                   },
                   child: Container(
                     width: 20,

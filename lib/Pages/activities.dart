@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_schedular/Pages/addTodo.dart';
 import 'package:my_schedular/Providers/dataProvider.dart';
 import 'package:my_schedular/components/activityItem.dart';
 import 'package:provider/provider.dart';
+
+Firestore _firestore = Firestore.instance;
 
 class Activities extends StatelessWidget {
   final String date;
@@ -152,24 +155,24 @@ class AcitiviesBody extends StatelessWidget {
                       //color: Colors.red,
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       width: double.infinity,
-                      //child: ExpansionList(),
-                      child: Container(
-
-                        //constraints: BoxConstraints(minHeight:MediaQuery.of(context).size.height/1.3, ),
-                        height: MediaQuery.of(context).size.height/1.3,
-                        child: ListView.builder(
-                          itemCount: provider.readTodoList.length,
-                          itemBuilder: (BuildContext context, index) {
-                            return ActivityItem(
-                              activity: provider.readTodoList[index]
-                                  ['activity'],
-                              time: provider.readTodoList[index]['time'],
-                              category: provider.readTodoList[index]
-                                  ['category'],
-                            );
-                          },
-                        ),
-                      ),
+                      //child: ExpansionList(),/
+                      child: MessagesStream()
+                      // Container(
+                      //   //constraints: BoxConstraints(minHeight:MediaQuery.of(context).size.height/1.3, ),
+                      //   height: MediaQuery.of(context).size.height / 1.3,
+                      //   child: ListView.builder(
+                      //     itemCount: provider.readTodoList.length,
+                      //     itemBuilder: (BuildContext context, index) {
+                      //       return ActivityItem(
+                      //         activity: provider.readTodoList[index]
+                      //             ['activity'],
+                      //         time: provider.readTodoList[index]['time'],
+                      //         category: provider.readTodoList[index]
+                      //             ['category'],
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
                     )
                   ],
                 ),
@@ -179,5 +182,64 @@ class AcitiviesBody extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+//this is where we are going to retrieve from our firestore using the streambuilder widget
+class MessagesStream extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var provider = Provider.of<DataProvider>(context);
+    return StreamBuilder<QuerySnapshot>(
+        stream: _firestore.collection('Task').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.lightBlueAccent,
+              ),
+            );
+          }
+
+          //the .reversed is used to return the messages in a reversed manner
+          final tasks = snapshot.data.documents;
+          for (var task in tasks) {
+            provider.addTodo = {
+              'activity': task.data['activity'],
+              'time': task.data['time'],
+              'category': task.data['category']
+            };
+            final messageText = task.data['text'];
+            final messageSender = task.data['sender'];
+
+            // final currentUser=loggedInUser.email;
+            // if (currentUser==messageSender){
+
+            // }
+
+            // final messageBubble = MessageBubble(
+            //   sender:messageSender,
+            //   text: messageText,
+            //   isMe: currentUser==messageSender
+            // ,);
+
+            // messageBubbles.add(messageBubble);
+          }
+          return Container(
+            //constraints: BoxConstraints(minHeight:MediaQuery.of(context).size.height/1.3, ),
+            height: MediaQuery.of(context).size.height / 1.3,
+            child: ListView.builder(
+              itemCount: provider.readTodoList.length,
+              itemBuilder: (BuildContext context, index) {
+                return ActivityItem(
+                  changeVariable: (){provider.setCounter=1;},
+                  activity: provider.readTodoList[index]['activity'],
+                  time: provider.readTodoList[index]['time'],
+                  category: provider.readTodoList[index]['category'],
+                );
+              },
+            ),
+          );
+        });
   }
 }

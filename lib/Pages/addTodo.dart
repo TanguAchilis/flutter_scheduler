@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:my_schedular/Providers/dataProvider.dart';
 import 'package:provider/provider.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+Firestore _firestore = Firestore.instance;
 //var formattedDate = "${date.day}-${date.month}-${date.year}";
 
 class AddTodo extends StatelessWidget {
   static String id = 'addTodo';
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +66,7 @@ class _MyHomeState extends State<MyHome> {
 
   @override
   Widget build(BuildContext context) {
-    var provider= Provider.of<DataProvider>(context);
+    var provider = Provider.of<DataProvider>(context);
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(MediaQuery.of(context).size.width / 15),
@@ -115,20 +119,19 @@ class _MyHomeState extends State<MyHome> {
               decoration: BoxDecoration(
                 color: Color(0xff2962ff),
                 borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
+                  topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
               ),
             ),
-            
 
             ////
             ///this is where the fields for data input start coming in
             ///
             TextFormField(
               decoration: InputDecoration(labelText: 'Activity'),
-              onChanged: (value){
-                activity=value;
+              onChanged: (value) {
+                activity = value;
               },
             ),
             Column(
@@ -270,18 +273,46 @@ class _MyHomeState extends State<MyHome> {
               decoration: InputDecoration(hintText: 'Notification'),
             ),
             RaisedButton(
-              onPressed: (){
-                provider.addTodo={'activity': activity, 'time': formatedTime, 'category': category};
+              onPressed: () {
+                provider.addTodo = {
+                  'activity': activity,
+                  'time': formatedTime,
+                  'category': category
+                };
                 Navigator.pop(context);
+                Map<String,String> certDataMap = {
+                  'activity': activity,
+                  'time': formatedTime,
+                  'category': category
+                };
+                _firestore
+                    .collection('Task')
+                    .add(certDataMap)
+                    .then((DocumentReference docRef) {
+                  _firestore
+                      .collection('Task')
+                      .document(docRef.documentID)
+                      .updateData({'certId': docRef.documentID}).then((_) {
+                    _firestore
+                        .collection('Users')
+                        .document('HVtQSXHcshSHY35oWLtb')
+                        .collection('UserTask')
+                        .document(docRef.documentID)
+                        .setData({'taskid': docRef.documentID});
+                  });
+                }).then((_){print('success');});
               },
               color: Color(0xff2962ff),
-              child: Text('Add your Todo', style: TextStyle(color: Colors.white),),
+              child: Text(
+                'Add your Todo',
+                style: TextStyle(color: Colors.white),
+              ),
               padding: EdgeInsets.symmetric(vertical: 13),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20)),
-                ),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20)),
+              ),
             )
           ],
         ),
