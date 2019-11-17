@@ -3,6 +3,7 @@ import 'package:my_schedular/Pages/activities.dart';
 import 'package:my_schedular/Pages/addTodo.dart';
 import 'package:my_schedular/Pages/home.dart';
 import 'package:my_schedular/Pages/loginPage.dart';
+import 'package:my_schedular/Providers/counterprovider.dart';
 import 'package:my_schedular/Providers/dataProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +16,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          builder: (_) => DataProvider(),
+          builder: (_) => CounterProvider(),
         ),
+
+        StreamProvider.value(
+          value: DataProvider.instance().streamUserTasks(''),
+        )
 
         
       ],
@@ -40,7 +45,7 @@ class MyApp extends StatelessWidget {
             AddTodo.id: (context) => AddTodo(),
             Activities.id: (context) => Activities()
           },
-          home: MyHomePage()),
-    );
+          home: Login(),
+    ),);
   }
 }

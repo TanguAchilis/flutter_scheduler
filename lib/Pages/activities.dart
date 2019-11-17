@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:my_schedular/DatamodelClass/allUserTaskModel.dart';
 import 'package:my_schedular/Pages/addTodo.dart';
 import 'package:my_schedular/Providers/dataProvider.dart';
 import 'package:my_schedular/components/activityItem.dart';
@@ -190,6 +191,7 @@ class MessagesStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<DataProvider>(context);
+    var allUserTask = Provider.of<List<UserTaskModel>>(context);
     return StreamBuilder<QuerySnapshot>(
         stream: _firestore.collection('Task').snapshots(),
         builder: (context, snapshot) {
