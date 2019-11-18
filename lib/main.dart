@@ -3,6 +3,8 @@ import 'package:my_schedular/Pages/activities.dart';
 import 'package:my_schedular/Pages/addTodo.dart';
 import 'package:my_schedular/Pages/home.dart';
 import 'package:my_schedular/Pages/loginPage.dart';
+import 'package:my_schedular/Pages/selectLoginOrSignUP.dart';
+import 'package:my_schedular/Pages/signUpPage.dart';
 import 'package:my_schedular/Providers/counterprovider.dart';
 import 'package:my_schedular/Providers/dataProvider.dart';
 import 'package:provider/provider.dart';
@@ -42,10 +44,12 @@ class MyApp extends StatelessWidget {
           routes: {
             MyHomePage.id: (context) => MyHomePage(),
             Login.id: (context) => Login(),
+            SignUP.id:(context) => SignUP(),
+            SelectLoginSignUp.id: (context) => SelectLoginSignUp(), 
             AddTodo.id: (context) => AddTodo(),
             Activities.id: (context) => Activities()
           },
-          home: Login(),
+          initialRoute: SelectLoginSignUp.id,
     ),);
   }
 }
